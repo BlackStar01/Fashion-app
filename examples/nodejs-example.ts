@@ -86,8 +86,8 @@ async function run() {
         }
         const endInputImage = sharp({
             create: {
-                width: singleImageSize * 2,
-                height: singleImageSize * 2,
+                width: singleImageSize ,
+                height: singleImageSize ,
                 background: 'white',
                 channels: 3
             }
