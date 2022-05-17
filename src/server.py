@@ -5,7 +5,7 @@ from waitress import serve
 from flask import Flask, jsonify, send_file
 from flask_restplus import Resource, Api
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 from werkzeug.datastructures import FileStorage
 import os
@@ -19,6 +19,7 @@ import torchvision.transforms as transforms
 import time
 from sklearn.cluster import KMeans
 from PIL import Image
+
 
 print('#######################')
 print('#######################')
@@ -56,7 +57,12 @@ def get_random_string(length):
 upload_parser = api.parser()
 upload_parser.add_argument('file1', location='files',
                            type=FileStorage, required=True)
-
+upload_parser.add_argument('file2', location='files',
+                           type=FileStorage, required=False)
+upload_parser.add_argument('file3', location='files',
+                           type=FileStorage, required=False)
+upload_parser.add_argument('file4', location='files',
+                           type=FileStorage, required=False)
 upload_parser.add_argument(
     'minPredictionValue',
     location='args',
@@ -118,6 +124,10 @@ def resizeImage(image):
 def mergeImages(images):
     background = Image.new(
         'RGB', (inputImageSize * 2, inputImageSize * 2), (255, 255, 255))
+    background.paste(images[0], (0, 0))
+    background.paste(images[1], (inputImageSize, 0))
+    background.paste(images[2], (0, inputImageSize))
+    background.paste(images[3], (inputImageSize, inputImageSize))
     return background
 
 
@@ -227,5 +237,5 @@ class Prediction(Resource):
 
 
 if __name__ == '__main__':
-    serve(app, host="0.0.0.0", port=5000)
-    # app.run(debug=False, host='0.0.0.0', port=5000)
+    serve(app, host="0.0.0.0", port=5080)
+    # app.run(debug=False, host='0.0.0.0', port=5080)

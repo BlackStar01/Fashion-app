@@ -3,4 +3,4 @@ services:
   fashion-segmentation:
     build: .
     ports:
-      - "5000:5000"
+      - "5080:5080"

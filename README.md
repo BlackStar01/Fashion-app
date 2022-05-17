@@ -28,7 +28,7 @@ With the generated data, you can build next-level features, such as a detailed c
 
 1. Clone this github repository `git clone https://github.com/pubkey/fashion-segmentation.git`.
 2. Build the image `docker build -t fashion-segmentation .`
-3. Start the container `docker run -it -p 5000:5000 fashion-segmentation`
+3. Start the container `docker run -it -p 5080:5080 fashion-segmentation`
 
 Or use the docker-compose.yml in the project via `docker compose up`
 

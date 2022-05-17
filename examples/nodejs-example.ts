@@ -37,7 +37,7 @@ const singeImageDimensions: Dimensions = {
  * When you increase this value you have more false positives but less false negatives.
  */
 const activationSignal = -0.7;
-const serverUrl = 'http://localhost:5000/predict?minPredictionValue=' + activationSignal;
+const serverUrl = 'http://localhost:5080/predict?minPredictionValue=' + activationSignal;
 
 async function run() {
     await clearFolder(allOutputDir);
@@ -95,6 +95,21 @@ async function run() {
             [
                 {
                     input: inputImageBuffers[0],
+                    top: 0,
+                    left: 0
+                },
+                {
+                    input: inputImageBuffers[1],
+                    top: 0,
+                    left: singleImageSize
+                },
+                {
+                    input: inputImageBuffers[2],
+                    top: singleImageSize,
+                    left: 0
+                },
+                {
+                    input: inputImageBuffers[3],
                     top: singleImageSize,
                     left: singleImageSize
                 }
