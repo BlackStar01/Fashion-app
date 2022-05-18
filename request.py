@@ -1,9 +1,8 @@
 # import required module
 import os
+import cv2
 import requests
 import sys
-import cv2
-import numpy as np
 from PIL import Image
 from io import BytesIO
 
@@ -25,9 +24,9 @@ for file in os.scandir(directory):
         files['file1'] = (file.path, open(file.path, 'rb'))
         break
 
-files['file2'] = ("input/0001/0001 (copy).jpg", open("input/0001/0001 (copy).jpg", 'rb'))
-files['file3'] = ("input/0001/0001 (copy).jpg", open("input/0001/0001 (copy).jpg", 'rb'))
-files['file4'] = ("input/0001/0001 (copy).jpg", open("input/0001/0001 (copy).jpg", 'rb'))
+files['file2'] = ("input/0001/0001.jpg", open("input/0001/0001.jpg", 'rb'))
+files['file3'] = ("input/0001/0001.jpg", open("input/0001/0001.jpg", 'rb'))
+files['file4'] = ("input/0001/0001.jpg", open("input/0001/0001.jpg", 'rb'))
 
         
 r = requests.post(url, files=files)
@@ -36,7 +35,14 @@ rawbytes = r.content
 
 stream = BytesIO(rawbytes)
 
+image = Image.open(stream).convert("RGBA")
+stream.close()
+image.save("converted.png", format="png")
 
-nparr = np.fromstring(rawbytes, np.uint8)
-image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # cv2.IMREAD_COLOR in OpenCV 3.1
-cv2.imwrite("converted.png", image[0:int(image.shape[0]/2),0:int(image.shape[1]/2)])
+
+img = cv2.imread('converted.png', cv2.IMREAD_UNCHANGED)
+
+height = img.shape[0]
+width = img.shape[1]
+
+cv2.imwrite("converted.png", img[:int(height/2), :int(width/2)])
